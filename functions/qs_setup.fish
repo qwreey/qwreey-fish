@@ -31,9 +31,17 @@ function _qs_setup_bin
 	mise upgrade
 end
 
+function _qs_setup_plugin
+	fisher install \
+		jorgebucaran/fisher qwreey/quietline-fish \
+		nickeb96/puffer-fish jorgebucaran/autopair.fish \
+		qwreey/qwreey-fish
+end
+
 function qs_setup
 	_qs_setup_fisher
 	_qs_setup_mise
 	_qs_setup_bin
+	_qs_setup_plugin
 	_qs_setup_carapace
 end
