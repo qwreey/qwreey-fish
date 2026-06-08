@@ -25,8 +25,15 @@ function _qs_setup_fisher
 	fisher install jorgebucaran/fisher
 end
 
+function _qs_setup_bin
+	# aqua:ogham/dog not works
+	mise use -g  eza gdu gitui duf btop bat jq fzf fd
+	mise upgrade
+end
+
 function qs_setup
 	_qs_setup_fisher
 	_qs_setup_mise
+	_qs_setup_bin
 	_qs_setup_carapace
 end
