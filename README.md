@@ -6,6 +6,11 @@
 
 ### Setup
 
+```sh
+curl -sL https://raw.githubusercontent.com/qwreey/qwreey-fish/refs/heads/main/functions/qs_setup.fish | source
+and qs_setup --with-carapace
+```
+
 ### Fish Shell Git Abbreviations (`gacpm`)
 
 To make the command easy to memorize, **`gacpm`** stands for **G**it **A**dd **C**ommit **P**ush **M**essage. This structure allows you to quickly compose and execute conventional commit commands.

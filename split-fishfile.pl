@@ -17,7 +17,7 @@ close $fh;
 # 함수를 빼고 남은 부분(leftover)을 저장할 변수에 원본 내용 복사
 my $leftover = $content;
 
-while ($content =~ /(^\s*function\s+([^\s]+).*?^end\b)/gms) {
+while ($content =~ /(^\s*function\s+([^\s;]+).*?^end\b)/gms) {
     my $full_func = $1;
     my $fnname = $2;
 

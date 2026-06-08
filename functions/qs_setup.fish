@@ -38,10 +38,18 @@ function _qs_setup_plugin
 		qwreey/qwreey-fish
 end
 
-function qs_setup
+function qs_setup; argparse --max-args 0 \
+	'with-carapace' \
+	'without-mise' \
+	'without-bin' \
+-- $argv
 	_qs_setup_fisher
-	_qs_setup_mise
-	_qs_setup_bin
+	if not set -q _flag_without_mise
+		_qs_setup_mise
+		set -q _flag_without_bin
+		or _qs_setup_bin
+	end
 	_qs_setup_plugin
-	_qs_setup_carapace
+	set -q _flag_with_carapace
+	and _qs_setup_carapace
 end
