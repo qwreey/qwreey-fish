@@ -1,18 +1,24 @@
 function _qs_setup_mise
-	set -l mise_path "$HOME/.config/mise/mise"
-	test -e $mise_path
-	and $mise_path self-update
-	or curl https://mise.run | MISE_INSTALL_PATH=$mise_path sh
+	# Install & check mise to standard path
+	set -q MISE_INSTALL_PATH
+	or set -l MISE_INSTALL_PATH "$HOME/.local/bin/mise"
+	test -e $MISE_INSTALL_PATH
+	and $MISE_INSTALL_PATH self-update
+	or curl https://mise.run | MISE_INSTALL_PATH=$MISE_INSTALL_PATH sh
 
-	set -l mise_script "$($mise_path activate fish | string replace "$HOME" "\$HOME")"
+	# Create mise activate conf
+	set -l mise_script "$($MISE_INSTALL_PATH activate fish | string replace -- "$HOME" "\$HOME")"
 	echo "$mise_script" > "$__fish_config_dir/conf.d/20-mise_activate.fish"
 	eval "$mise_script"
+
+	# for mise autocomplete
+	mise use -g usage
 end
 
 function _qs_setup_carapace
 	set -Ux CARAPACE_BRIDGES 'zsh,fish,bash,inshellisense'
 	mise use -g carapace@latest
-	set -l carapace_script "$(carapace _carapace fish | string replace "$HOME" "\$HOME")"
+	set -l carapace_script "$(carapace _carapace fish | string replace -- "$HOME" "\$HOME")"
 	echo "$carapace_script" > "$__fish_config_dir/conf.d/30-carapace_activate.fish"
 	eval "$carapace_script"
 end
@@ -27,8 +33,7 @@ end
 
 function _qs_setup_bin
 	# aqua:ogham/dog not works
-	mise use -g  eza gdu gitui duf btop bat jq fzf fd
-	mise upgrade
+	mise use -g eza gdu gitui duf btop bat jq fzf fd ripgrep
 end
 
 function _qs_setup_plugin

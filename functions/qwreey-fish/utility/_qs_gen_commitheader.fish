@@ -9,6 +9,7 @@ function _qs_gen_commitheader -a prefix range
 		case rf re; set prefix "refactor"
 		case pe pf; set prefix "perf"
 		case se sc; set prefix "security"
+		case de db; set prefix "debug"
 		case st; set prefix "style"
 		case dk; set prefix "docker"
 	end

@@ -1,6 +1,6 @@
 function _qs_init_alias
-    # Add color support
-    command -q dir
+	# Add color support
+	command -q dir
 	and alias dir='dir --color=auto'
 	command -q grep
 	and alias grep='grep --color=auto'

@@ -32,6 +32,7 @@ You can use the full commit type or the following shortcodes:
 * `rf`, `re` : refactor
 * `pe`, `pf` : perf
 * `se`, `sc` : security
+* `de`, `db` : debug
 * `st`       : style
 * `dk`       : docker
 

@@ -5,4 +5,5 @@ function qs_init
 
 	_qs_init_abbr
 	_qs_init_alias
+	# _qs_init_magicenter
 end
