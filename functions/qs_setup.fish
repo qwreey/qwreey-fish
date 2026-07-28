@@ -9,7 +9,7 @@ function _qs_setup_mise
 	# Create mise activate conf
 	# set -l mise_script "$($MISE_INSTALL_PATH activate fish | string replace -- "$HOME" "\$HOME")"
 	# eval "$mise_script"
-	echo "$MISE_INSTALL_PATH activate fish" > "$__fish_config_dir/conf.d/20-mise_activate.fish"
+	echo "eval \"\$($MISE_INSTALL_PATH activate fish)\"" > "$__fish_config_dir/conf.d/20-mise_activate.fish"
 	eval "$($MISE_INSTALL_PATH activate fish)"
 
 	# for mise autocomplete
