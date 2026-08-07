@@ -8,4 +8,5 @@ function qs_init
 	# _qs_init_magicenter
 
 	fish_add_path -a $HOME/.local/bin
+	or true
 end
