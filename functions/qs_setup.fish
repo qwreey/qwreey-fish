@@ -1,3 +1,52 @@
+# mise packages that don't have a working build for Termux/Android and
+# have no native Termux package either; just skip them there.
+set -g _qs_mise_termux_ignore usage btop
+
+# mise packages that don't have a working build for Termux/Android but do
+# have a native Termux package; install these via `pkg` there instead.
+# Format: misepkgname:pkgname
+set -g _qs_mise_termux_native \
+	eza:eza gdu:gdu gitui:gitui duf:duf bat:bat jq:jq fzf:fzf fd:fd ripgrep:ripgrep
+
+function _qs_mise_termux_native_lookup --argument-names pkgname
+	for entry in $_qs_mise_termux_native
+		set -l parts (string split ":" $entry)
+		test "$parts[1]" = "$pkgname"
+		and echo $parts[2]
+		and return 0
+	end
+	return 1
+end
+
+# Wrapper around `mise use -g` that, on Termux, drops packages in
+# $_qs_mise_termux_ignore and installs packages in $_qs_mise_termux_native
+# via `pkg` instead of mise.
+function _qs_mise_use
+	if not set -q TERMUX_VERSION
+		mise use -g $argv
+		return
+	end
+
+	set -l mise_packages
+	set -l native_packages
+	for pkgname in $argv
+		contains -- $pkgname $_qs_mise_termux_ignore
+		and continue
+		set -l native_name (_qs_mise_termux_native_lookup $pkgname)
+		if test $status -eq 0
+			set -a native_packages $native_name
+		else
+			set -a mise_packages $pkgname
+		end
+	end
+
+	test (count $native_packages) -gt 0
+	and pkg install -y $native_packages
+	test (count $mise_packages) -gt 0
+	and mise use -g $mise_packages
+	return 0
+end
+
 function _qs_setup_mise
 	# Install & check mise to standard path
 	if set -q TERMUX_VERSION
@@ -19,7 +68,7 @@ function _qs_setup_mise
 	eval "$($MISE_INSTALL_PATH activate fish)"
 
 	# for mise autocomplete
-	mise use -g usage
+	_qs_mise_use usage
 end
 
 function _qs_setup_carapace
@@ -40,7 +89,7 @@ end
 
 function _qs_setup_bin
 	# aqua:ogham/dog not works
-	mise use -g eza gdu gitui duf btop bat jq fzf fd ripgrep
+	_qs_mise_use eza gdu gitui duf btop bat jq fzf fd ripgrep
 end
 
 function _qs_setup_plugin
