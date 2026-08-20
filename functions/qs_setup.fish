@@ -1,10 +1,16 @@
 function _qs_setup_mise
 	# Install & check mise to standard path
-	set -q MISE_INSTALL_PATH
-	or set -l MISE_INSTALL_PATH "$HOME/.local/bin/mise"
-	test -e $MISE_INSTALL_PATH
-	and $MISE_INSTALL_PATH self-update
-	or curl https://mise.run | MISE_INSTALL_PATH=$MISE_INSTALL_PATH sh
+	if set -q TERMUX_VERSION
+		# Termux ships mise as a pkg; install/upgrade through pkg and point at its binary
+		pkg install -y mise
+		set -f MISE_INSTALL_PATH "$PREFIX/bin/mise"
+	else
+		set -q MISE_INSTALL_PATH
+		or set -f MISE_INSTALL_PATH "$HOME/.local/bin/mise"
+		test -e $MISE_INSTALL_PATH
+		and $MISE_INSTALL_PATH self-update
+		or curl https://mise.run | MISE_INSTALL_PATH=$MISE_INSTALL_PATH sh
+	end
 
 	# Create mise activate conf
 	# set -l mise_script "$($MISE_INSTALL_PATH activate fish | string replace -- "$HOME" "\$HOME")"
