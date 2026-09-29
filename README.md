@@ -11,6 +11,24 @@ curl -sL https://raw.githubusercontent.com/qwreey/qwreey-fish/refs/heads/main/fu
 and qs_setup --with-carapace
 ```
 
+`qs_setup` installs pinned versions only: fisher and each plugin at a commit,
+mise at a release checked against its sha256, and every mise tool at a version
+(see the pins block at the top of `functions/qs_setup.fish`). `qs_update`
+moves qwreey-fish to the latest `main` and re-runs `qs_setup` with its pins.
+
+To pin qwreey-fish itself too, fetch `qs_setup.fish` from a commit and pass
+the same commit: `qs_setup --self qwreey/qwreey-fish@<commit>`.
+
+### Bumping the pins
+
+```sh
+scripts/bump-pins.sh            # resolve latest, review upstream diffs, pick what to take
+scripts/test-setup.sh           # qs_setup in a fresh Arch container, checks every pin landed
+scripts/test-setup.sh --upgrade # same, on top of the currently published setup
+```
+
+`bump-pins.sh --check` only reports what is out of date.
+
 ### Fish Shell Git Abbreviations (`gacpm`)
 
 To make the command easy to memorize, **`gacpm`** stands for **G**it **A**dd **C**ommit **P**ush **M**essage. This structure allows you to quickly compose and execute conventional commit commands.
